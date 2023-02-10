@@ -1,0 +1,45 @@
+<h2>Create New Contact</h2>
+<hr />
+
+<!-- jiks trdapat error pada inputan -->
+<% if(err.length > 0) { %>
+<div class="mb-2 row">
+  <div class="col-sm-6">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <!-- menampilkan pesan error -->
+      <% err.forEach(message => { %>
+      <ul>
+        <li><%= message %></li>
+      </ul>
+      <% }) %>
+    </div>
+  </div>
+</div>
+<% }%>
+
+<!-- form untuk tambah data -->
+<form action="/store" method="post">
+  <div class="mb-2 row">
+    <label for="name" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="name" name="name" value="<%= data.name %>" required />
+    </div>
+  </div>
+  <div class="mb-2 row">
+    <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-4">
+      <input type="email" class="form-control" id="email" name="email" value="<%= data.email %>" />
+    </div>
+  </div>
+  <div class="mb-2 row">
+    <label for="mobile" class="col-sm-2 col-form-label">Mobile Phone</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="mobile" name="mobile" value="<%= data.mobile %>" required />
+    </div>
+  </div>
+  <div class="mb-2 row">
+    <div class="col-sm-6 text-center">
+      <button type="submit" class="form-control btn btn-sm btn-primary mb-3">Submit</button>
+    </div>
+  </div>
+</form>
