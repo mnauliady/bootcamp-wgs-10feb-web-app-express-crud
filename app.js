@@ -163,8 +163,11 @@ app.post("/contact/update", (req, res) => {
   // cek jika data sudah ada
   const cek = contacts.find((contact) => contact.name.toLowerCase() === req.body.name.toLowerCase());
 
-  // jika nama pada data input sama dengan data oldName sehingga bisa dimasukkan ke dalam file
-  if (req.body.oldName === req.body.name) {
+  if (cek && req.body.oldName != req.body.name) {
+    req.flash("message", `Gunakan nama lain, ${req.body.name} sudah ada!`);
+    // push pesan error ke array
+    err.push(req.flash("message"));
+  } else {
     if (err.length == 0) {
       // menghapus data
       const oldData = contacts.filter((contact) => contact.name.toLowerCase() !== req.body.oldName.toLowerCase());
@@ -178,27 +181,6 @@ app.post("/contact/update", (req, res) => {
       // menyimpan data
       saveContact(oldData);
     }
-  } else {
-    // jika nama pada data input berbeda dengan data oldName
-    if (cek) {
-      req.flash("message", `Gunakan nama lain, ${req.body.name} sudah ada!`);
-      // push pesan error ke array
-      err.push(req.flash("message"));
-    } else {
-      if (err.length == 0) {
-        // menghapus data
-        const oldData = contacts.filter((contact) => contact.name.toLowerCase() !== req.body.oldName.toLowerCase());
-
-        // Data baru
-        const newData = { name: req.body.name, email: req.body.email, mobile: req.body.mobile };
-
-        // push data baru/tambahkan ke arraay yang lama
-        oldData.push(newData);
-
-        // menyimpan data
-        saveContact(oldData);
-      }
-    }
   }
 
   // jika ada error
@@ -207,6 +189,7 @@ app.post("/contact/update", (req, res) => {
     return res.render("edit", { title: "Edit Data", err, data: req.body, oldName: req.body.oldName });
   }
 
+  // redirect ke halaman contact
   res.redirect("/contact");
 });
 
